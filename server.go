@@ -12,6 +12,7 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
-	e.GET("/hello", handler.MainPage())
+	e.GET("/todos", handler.ListTodo)
+	e.POST("/todos", handler.CreateTodo)
 	e.Logger.Fatal(e.Start(":1323"))
 }
