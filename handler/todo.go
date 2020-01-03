@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/labstack/echo"
 	"net/http"
+	"strconv"
 )
 
 type Todo struct {
@@ -24,4 +25,14 @@ func CreateTodo(c echo.Context) error {
 		return err
 	}
 	return c.JSON(http.StatusCreated, todo)
+}
+
+func DetailTodo(c echo.Context) error {
+	var id int
+	id, _ = strconv.Atoi(c.Param("id"))
+	todo := Todo{
+		Id: id,
+		Name: "test1",
+	}
+	return c.JSON(http.StatusOK, todo)
 }
