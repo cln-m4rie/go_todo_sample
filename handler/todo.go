@@ -7,9 +7,14 @@ import (
 )
 
 type Todo struct {
-	Id int `json:"id"`
+	Id   int    `json:"id"`
 	Name string `json:"name"`
 }
+
+var (
+	Todos = map[int]*Todo{}
+	seq   = 1
+)
 
 func ListTodo(c echo.Context) error {
 	todos := []Todo{
@@ -20,19 +25,33 @@ func ListTodo(c echo.Context) error {
 }
 
 func CreateTodo(c echo.Context) error {
-	todo := new(Todo)
+	todo := &Todo{
+		Id: seq,
+	}
 	if err := c.Bind(todo); err != nil {
 		return err
 	}
 	return c.JSON(http.StatusCreated, todo)
 }
 
-func DetailTodo(c echo.Context) error {
-	var id int
-	id, _ = strconv.Atoi(c.Param("id"))
+func GetTodo(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
 	todo := Todo{
-		Id: id,
+		Id:   id,
 		Name: "test1",
+	}
+	return c.JSON(http.StatusOK, todo)
+}
+
+func UpdateTodo(c echo.Context) error {
+	reqTodo := new(Todo)
+	if err := c.Bind(reqTodo); err != nil {
+		return err
+	}
+	id, _ := strconv.Atoi(c.Param("id"))
+	todo := Todo{
+		Id:   id,
+		Name: reqTodo.Name,
 	}
 	return c.JSON(http.StatusOK, todo)
 }
