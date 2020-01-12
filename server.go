@@ -17,13 +17,14 @@ var (
 
 func main() {
 	e := echo.New()
-	h := handler.Handler{mockDB}
+	todoListHandler := handler.TodoListHandler{mockDB}
+	todoHandler := handler.TodoHandler{mockDB[0]}
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
-	e.GET("/todos", h.ListTodo)
-	e.POST("/todos", handler.CreateTodo)
+	e.GET("/todos", todoListHandler.ListTodo)
+	e.POST("/todos", todoHandler.CreateTodo)
 	e.GET("/todos/:id", handler.GetTodo)
 	e.PUT("/todos/:id", handler.UpdateTodo)
 	e.Logger.Fatal(e.Start(":1323"))

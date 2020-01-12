@@ -11,8 +11,11 @@ type (
 		Id   int    `json:"id"`
 		Name string `json:"name"`
 	}
-	Handler struct {
+	TodoListHandler struct {
 		Db []Todo
+	}
+	TodoHandler struct {
+		Db Todo
 	}
 )
 
@@ -21,12 +24,12 @@ var (
 	seq   = 1
 )
 
-func (h Handler) ListTodo(c echo.Context) error {
+func (h TodoListHandler) ListTodo(c echo.Context) error {
 	todos := h.Db
 	return c.JSON(http.StatusOK, todos)
 }
 
-func CreateTodo(c echo.Context) error {
+func (h TodoHandler) CreateTodo(c echo.Context) error {
 	todo := &Todo{
 		Id: seq,
 	}
