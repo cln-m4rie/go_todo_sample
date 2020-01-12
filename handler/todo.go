@@ -6,21 +6,23 @@ import (
 	"strconv"
 )
 
-type Todo struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-}
+type (
+	Todo struct {
+		Id   int    `json:"id"`
+		Name string `json:"name"`
+	}
+	Handler struct {
+		Db []Todo
+	}
+)
 
 var (
 	Todos = map[int]*Todo{}
 	seq   = 1
 )
 
-func ListTodo(c echo.Context) error {
-	todos := []Todo{
-		{Id: 1, Name: "test1"},
-		{Id: 2, Name: "test2"},
-	}
+func (h Handler) ListTodo(c echo.Context) error {
+	todos := h.Db
 	return c.JSON(http.StatusOK, todos)
 }
 
