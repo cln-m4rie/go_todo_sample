@@ -17,7 +17,7 @@ var (
 		{3, "test3"},
 	}
 	todoListJSON = `[{"id":1,"name":"test1"},{"id":2,"name":"test2"},{"id":3,"name":"test3"}]`
-	todoJSON = `{"id":1,"name":"test1"}`
+	todoJSON     = `{"id":1,"name":"test1"}`
 )
 
 func TestTodoListHandler_ListTodo(t *testing.T) {
