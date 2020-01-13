@@ -25,7 +25,7 @@ func main() {
 	})
 	e.GET("/todos", todoListHandler.ListTodo)
 	e.POST("/todos", todoHandler.CreateTodo)
-	e.GET("/todos/:id", handler.GetTodo)
+	e.GET("/todos/:id", todoHandler.GetTodo)
 	e.PUT("/todos/:id", handler.UpdateTodo)
 	e.Logger.Fatal(e.Start(":1323"))
 }

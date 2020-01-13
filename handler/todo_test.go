@@ -50,3 +50,21 @@ func TestTodoHandler_CreateTodo(t *testing.T) {
 		assert.Equal(t, todoJSON, strings.TrimSuffix(rec.Body.String(), "\n"))
 	}
 }
+
+func TestTodoHandler_GetTodo(t *testing.T) {
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/", strings.NewReader(todoJSON))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/todos/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("1")
+	h := &TodoHandler{mockDB[0]}
+
+	// Assertions
+	if assert.NoError(t, h.GetTodo(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.Equal(t, todoJSON, strings.TrimSuffix(rec.Body.String(), "\n"))
+	}
+}

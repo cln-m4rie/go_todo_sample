@@ -39,7 +39,7 @@ func (h TodoHandler) CreateTodo(c echo.Context) error {
 	return c.JSON(http.StatusCreated, todo)
 }
 
-func GetTodo(c echo.Context) error {
+func (h TodoHandler)GetTodo(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	todo := Todo{
 		Id:   id,
