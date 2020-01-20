@@ -11,10 +11,8 @@ import (
 )
 
 var (
-	mockDB = []Todo{
-		{1, "test1"},
-		{2, "test2"},
-		{3, "test3"},
+	mockDB = map[string]*Todo{
+		"1": &Todo{1, "test1"},
 	}
 	todoListJSON = `[{"id":1,"name":"test1"},{"id":2,"name":"test2"},{"id":3,"name":"test3"}]`
 	todoJSON     = `{"id":1,"name":"test1"}`
@@ -26,7 +24,7 @@ func TestTodoListHandler_ListTodo(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/todos")
-	h := &TodoListHandler{mockDB}
+	h := &TodoHandler{mockDB}
 
 	// Assertions
 	if assert.NoError(t, h.ListTodo(c)) {
@@ -42,7 +40,7 @@ func TestTodoHandler_CreateTodo(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/todos")
-	h := &TodoHandler{mockDB[0]}
+	h := &TodoHandler{mockDB}
 
 	// Assertions
 	if assert.NoError(t, h.CreateTodo(c)) {
@@ -60,7 +58,7 @@ func TestTodoHandler_GetTodo(t *testing.T) {
 	c.SetPath("/todos/:id")
 	c.SetParamNames("id")
 	c.SetParamValues("1")
-	h := &TodoHandler{mockDB[0]}
+	h := &TodoHandler{mockDB}
 
 	// Assertions
 	if assert.NoError(t, h.GetTodo(c)) {

@@ -8,28 +8,25 @@ import (
 
 type (
 	Todo struct {
-		Id   int    `json:"id"`
-		Name string `json:"name"`
-	}
-	TodoListHandler struct {
-		Db []Todo
+		Id   int    `json:"id" from:"id"`
+		Name string `json:"name" from:"name"`
 	}
 	TodoHandler struct {
-		Db Todo
+		Db map[string]*Todo
 	}
 )
 
 var (
-	Todos = map[int]*Todo{}
+	Todos = map[string]*Todo{}
 	seq   = 1
 )
 
-func (h TodoListHandler) ListTodo(c echo.Context) error {
-	todos := h.Db
+func (h *TodoHandler) ListTodo(c echo.Context) error {
+	todos := &Todos
 	return c.JSON(http.StatusOK, todos)
 }
 
-func (h TodoHandler) CreateTodo(c echo.Context) error {
+func (h *TodoHandler) CreateTodo(c echo.Context) error {
 	todo := &Todo{
 		Id: seq,
 	}
@@ -39,12 +36,9 @@ func (h TodoHandler) CreateTodo(c echo.Context) error {
 	return c.JSON(http.StatusCreated, todo)
 }
 
-func (h TodoHandler)GetTodo(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	todo := Todo{
-		Id:   id,
-		Name: "test1",
-	}
+func (h *TodoHandler)GetTodo(c echo.Context) error {
+	id := c.Param("id")
+	todo := h.Db[id]
 	return c.JSON(http.StatusOK, todo)
 }
 

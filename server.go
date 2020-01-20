@@ -8,17 +8,15 @@ import (
 )
 
 var (
-	mockDB = []handler.Todo{
-		{1, "test1"},
-		{2, "test2"},
-		{3, "test3"},
+	mockDB = map[string]*handler.Todo{
+		"1": &handler.Todo{1, "test1"},
 	}
 )
 
 func main() {
 	e := echo.New()
-	todoListHandler := handler.TodoListHandler{mockDB}
-	todoHandler := handler.TodoHandler{mockDB[0]}
+	todoListHandler := &handler.TodoHandler{mockDB}
+	todoHandler := &handler.TodoHandler{mockDB}
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
